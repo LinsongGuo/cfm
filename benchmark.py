@@ -7,6 +7,8 @@ def print_output(workload, args):
     print(workload.stdout.decode('utf-8'), '\n')
     print(workload.stderr.decode('utf-8'), '\n')
     process_duration = workload.get_process_duration()
+    with open('tmp.txt', 'w') as f:
+        f.write(str(process_duration))
     print('Python Wall Time: {}'.format(process_duration), '\n')
 
     usr_bin_time = workload.get_usr_bin_time()
@@ -38,7 +40,7 @@ def run_benchmark(args):
 
 def main():
     # Parse Command Line Arguments
-    workload_choices = ['quicksort', 'linpack', 'tf-inception',
+    workload_choices = ['quicksort', 'cp-more-ref', 'peeling', 'fusion', 'interleave', 'mcf429', 'dataframe', 'linpack', 'tf-inception',
                         'tf-resnet', 'spark', 'kmeans', 'memaslap',
                         'stream']
 

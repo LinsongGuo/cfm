@@ -158,6 +158,115 @@ class Quicksort(Workload):
         full_command = ' '.join((prefix, 'exec', set_cpu, shell_cmd))
         return full_command
 
+class Dataframe(Workload):
+    wname = "dataframe"
+    ideal_mem = 29850
+    min_ratio = 0
+    min_mem = int(min_ratio * ideal_mem)
+    binary_name = "dataframe"
+    cpu_req = 1
+    coeff = [0]
+    
+    def get_cmdline(self, procs_path, pinned_cpus):
+        prefix = "echo $$ > {} &&".format(procs_path)
+        arg = ''
+        shell_cmd = '/usr/bin/time -v' + ' ' + constants.WORK_DIR + '/dataframe/build/bin/main {}'.format(arg)
+        pinned_cpus_string = ','.join(map(str, pinned_cpus))
+        set_cpu = 'taskset -c {}'.format(pinned_cpus_string)
+        full_command = ' '.join((prefix, 'exec', set_cpu, shell_cmd))
+        return full_command
+    
+class MCF429(Workload):
+    wname = "mcf429"
+    ideal_mem = 345
+    min_ratio = 0
+    min_mem = int(min_ratio * ideal_mem)
+    binary_name = "mcf429"
+    cpu_req = 1
+    coeff = [0]
+    
+    def get_cmdline(self, procs_path, pinned_cpus):
+        prefix = "echo $$ > {} &&".format(procs_path)
+        arg = ''
+        shell_cmd = '/usr/bin/time -v' + ' ' + constants.WORK_DIR + '/429.mcf/src/mcf {}/429.mcf/data/train/input/inp.in {}'.format(constants.WORK_DIR, arg)
+        pinned_cpus_string = ','.join(map(str, pinned_cpus))
+        set_cpu = 'taskset -c {}'.format(pinned_cpus_string)
+        full_command = ' '.join((prefix, 'exec', set_cpu, shell_cmd))
+        return full_command
+    
+class Peeling(Workload):
+    wname = "peeling"
+    ideal_mem = 1052
+    min_ratio = 0
+    min_mem = int(min_ratio * ideal_mem)
+    binary_name = "peeling"
+    cpu_req = 1
+    coeff = [0]
+    
+    def get_cmdline(self, procs_path, pinned_cpus):
+        prefix = "echo $$ > {} &&".format(procs_path)
+        arg = ''
+        shell_cmd = '/usr/bin/time -v' + ' ' + constants.WORK_DIR + '/raw_eth_pktgen/build/bin/peeling-ref {}'.format(arg)
+        pinned_cpus_string = ','.join(map(str, pinned_cpus))
+        set_cpu = 'taskset -c {}'.format(pinned_cpus_string)
+        full_command = ' '.join((prefix, 'exec', set_cpu, shell_cmd))
+        return full_command
+
+
+class Fusion(Workload):
+    wname = "fusion"
+    ideal_mem = 8250
+    min_ratio = 0
+    min_mem = int(min_ratio * ideal_mem)
+    binary_name = "fusion"
+    cpu_req = 1
+    coeff = [0]
+    
+    def get_cmdline(self, procs_path, pinned_cpus):
+        prefix = "echo $$ > {} &&".format(procs_path)
+        arg = ''
+        shell_cmd = '/usr/bin/time -v' + ' ' + constants.WORK_DIR + '/raw_eth_pktgen/build/bin/fusion-ref {}'.format(arg)
+        pinned_cpus_string = ','.join(map(str, pinned_cpus))
+        set_cpu = 'taskset -c {}'.format(pinned_cpus_string)
+        full_command = ' '.join((prefix, 'exec', set_cpu, shell_cmd))
+        return full_command
+
+class Interleave(Workload):
+    wname = "interleave"
+    ideal_mem = 5150
+    min_ratio = 0
+    min_mem = int(min_ratio * ideal_mem)
+    binary_name = "interleave"
+    cpu_req = 1
+    coeff = [0]
+    
+    def get_cmdline(self, procs_path, pinned_cpus):
+        prefix = "echo $$ > {} &&".format(procs_path)
+        arg = ''
+        shell_cmd = '/usr/bin/time -v' + ' ' + constants.WORK_DIR + '/raw_eth_pktgen/build/bin/interlf-ref {}'.format(arg)
+        pinned_cpus_string = ','.join(map(str, pinned_cpus))
+        set_cpu = 'taskset -c {}'.format(pinned_cpus_string)
+        full_command = ' '.join((prefix, 'exec', set_cpu, shell_cmd))
+        return full_command
+
+class CpMoreRef(Workload):
+    wname = "cp-more-ref"
+    ideal_mem = 1060
+    min_ratio = 0
+    min_mem = int(min_ratio * ideal_mem)
+    binary_name = "cp-more-ref"
+    cpu_req = 1
+    coeff = [0]
+    
+    def get_cmdline(self, procs_path, pinned_cpus):
+        prefix = "echo $$ > {} &&".format(procs_path)
+        arg = ''
+        shell_cmd = '/usr/bin/time -v' + ' ' + constants.WORK_DIR + '/raw_eth_pktgen/build/bin/cp-more-ref {}'.format(arg)
+        pinned_cpus_string = ','.join(map(str, pinned_cpus))
+        set_cpu = 'taskset -c {}'.format(pinned_cpus_string)
+        full_command = ' '.join((prefix, 'exec', set_cpu, shell_cmd))
+        return full_command
+    
 
 class Linpack(Workload):
     wname = "linpack"
@@ -414,6 +523,12 @@ class Stream(Workload):
 
 def get_workload_class(wname):
     return {'quicksort': Quicksort,
+            'peeling': Peeling,
+            'cp-more-ref': CpMoreRef,
+            'fusion': Fusion,
+            'interleave': Interleave,
+            'mcf429': MCF429,
+            'dataframe': Dataframe,
             'linpack': Linpack,
             'tf-inception': Tfinception,
             'tf-resnet': Tfresnet,
